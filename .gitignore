@@ -30,4 +30,4 @@ bin/
 !/out/
 
 # Project exclude paths
-/out/
+/out/!/internetshop.iml
