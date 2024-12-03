@@ -1,10 +1,18 @@
 package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
-
 public class ProductBasket {
-    public void addProduct(Product product) {
-
+    private final Product[] products = new Product[10];
+    private int productCount = 0;
+    public boolean addProduct(Product product) {
+        for (int i = 0; i < products.length; i++) {
+            if (products[i] == null) {
+                products[i] = product;
+                productCount++;
+                return true;
+            }
+        }
+        return false;
     }
     public double getTotalPrice() {
         return 0;
