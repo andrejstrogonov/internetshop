@@ -1,34 +1,52 @@
 package org.skypro.skyshop.product;
 
-public class Product {
-    private String name;
-    private int price;
+import org.jetbrains.annotations.NotNull;
 
-    public Product(String name, int price) {
-        this.name = name;
+/**
+ * Продукт.
+ *
+ * @author Константин Терских, kostus.online.1974@yandex.ru, 2024
+ * @version 1.1
+ */
+public class Product {
+    /**
+     * Название продукта.
+     */
+    @NotNull
+    private final String title;
+
+    /**
+     * Цена продукта.
+     */
+    private final int price;
+
+    /**
+     * Конструктор.
+     *
+     * @param title название продукта.
+     * @param price цена продукта.
+     */
+    public Product(@NotNull String title, int price) {
+        this.title = title;
         this.price = price;
     }
 
-    public String getName() {
-        return name;
+    /**
+     * Получить название продукта.
+     *
+     * @return название продукта.
+     */
+    @NotNull
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    /**
+     * Получить цену продукта.
+     *
+     * @return цена продукта.
+     */
     public int getPrice() {
         return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", price=" + price +
-                '}';
     }
 }
