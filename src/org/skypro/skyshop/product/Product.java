@@ -9,9 +9,6 @@ public abstract class Product {
     @NotNull
     private final String title;
 
-    /**
-     * Цена продукта.
-     */
 
     /**
      * Конструктор.
@@ -33,7 +30,5 @@ public abstract class Product {
     }
 
     @NotNull
-    public abstract int getPrice() {return price;  }
-
-
+    public abstract int getPrice();
 }
