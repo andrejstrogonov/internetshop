@@ -16,6 +16,6 @@ public class FixPriceProduct extends Product{
 
     @Override
     public @NotNull int getPrice() {
-        return 0;
+        return fixPrice;
     }
 }
