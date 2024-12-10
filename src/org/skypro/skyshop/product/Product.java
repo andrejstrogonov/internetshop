@@ -2,13 +2,7 @@ package org.skypro.skyshop.product;
 
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Продукт.
- *
- * @author Константин Терских, kostus.online.1974@yandex.ru, 2024
- * @version 1.1
- */
-public class Product {
+public abstract class Product {
     /**
      * Название продукта.
      */
@@ -18,17 +12,14 @@ public class Product {
     /**
      * Цена продукта.
      */
-    private final int price;
 
     /**
      * Конструктор.
      *
-     * @param title название продукта.
-     * @param price цена продукта.
+     * @param title название продукта
      */
-    public Product(@NotNull String title, int price) {
+    public Product(@NotNull String title) {
         this.title = title;
-        this.price = price;
     }
 
     /**
@@ -46,7 +37,4 @@ public class Product {
      *
      * @return цена продукта.
      */
-    public int getPrice() {
-        return price;
-    }
 }
