@@ -32,9 +32,8 @@ public abstract class Product {
         return title;
     }
 
-    /**
-     * Получить цену продукта.
-     *
-     * @return цена продукта.
-     */
+    @NotNull
+    public abstract int getPrice() {return price;  }
+
+
 }
