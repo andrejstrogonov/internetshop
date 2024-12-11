@@ -103,8 +103,8 @@ public class ProductBasket {
     }
     private int getDiscountedProductCount() {
         int count = 0;
-        for (Product product : products) {
-            if (product != null && product instanceof DiscountedProduct) {
+        for (DiscountedProduct price:price) {
+            if (discountPercentage != null) {
                 count++;
             }
         }
@@ -112,8 +112,8 @@ public class ProductBasket {
     }
     private int getFixPriceProductCount() {
         int count = 0;
-        for (Product product : products) {
-            if (product != null && product instanceof FixPriceProduct) {
+        for (FixPriceProduct product : products) {
+            if (product != null) {
                 count++;
             }
         }
