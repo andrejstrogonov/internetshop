@@ -101,7 +101,7 @@ public class ProductBasket {
     }
 
     /**
-     * Печать корзины.
+     * Печать содержимого корзины.
      */
     public void print() {
         if (getProductCount() <= 0) {
