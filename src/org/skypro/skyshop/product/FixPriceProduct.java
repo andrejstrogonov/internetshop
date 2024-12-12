@@ -9,13 +9,20 @@ public class FixPriceProduct extends Product{
      *
      * @param title название продукта
      */
-    public FixPriceProduct(@NotNull String title, int FIX_PRICE) {
+    public FixPriceProduct(@NotNull String title, int fixPrice) {
         super(title);
-        this.FIX_PRICE = FIX_PRICE;
+        FIX_PRICE = fixPrice;
     }
 
     @Override
     public @NotNull int getPrice() {
         return FIX_PRICE;
+    }
+
+    @Override
+    public String toString() {
+        return "FixPriceProduct{" +
+                "FIX_PRICE=" + FIX_PRICE +
+                '}';
     }
 }

@@ -1,7 +1,6 @@
 package org.skypro.skyshop;
 
 import org.skypro.skyshop.basket.ProductBasket;
-import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
 
@@ -57,12 +56,6 @@ public class App {
         // Поиск товара по имени в пустой корзине.
         exists = basket.contains(product1.getTitle());
         System.out.println("Товар " + product1.getTitle() + " есть в корзине: " + exists);
-
-        // Вывод продуктов со скидкой
-        System.out.println("Продукты со скидкой:");
-
-        //Вывод продуктов с фиксированной ценой
-        System.out.println("Продукты с фиксированной ценой:");
 
     }
 }
