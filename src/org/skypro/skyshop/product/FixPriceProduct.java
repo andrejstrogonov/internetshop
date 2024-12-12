@@ -21,8 +21,6 @@ public class FixPriceProduct extends Product{
 
     @Override
     public String toString() {
-        return "FixPriceProduct{" +
-                "FIX_PRICE=" + FIX_PRICE +
-                '}';
+        return  "Фиксированная цена" + FIX_PRICE;
     }
 }

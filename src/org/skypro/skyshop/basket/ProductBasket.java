@@ -1,6 +1,8 @@
 package org.skypro.skyshop.basket;
 
 import org.jetbrains.annotations.NotNull;
+import org.skypro.skyshop.product.DiscountedProduct;
+import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
 
 import java.util.Arrays;
@@ -114,6 +116,17 @@ public class ProductBasket {
                 System.out.println(product.getTitle() + ": " + product.getPrice());
             }
         }
+        for (Product product : products) {
+            if (product != null) {
+                System.out.println(DiscountedProduct.toString());
+            }
+        }
+        for (Product product : products) {
+            if (product != null) {
+                System.out.println(FixPriceProduct.toString());
+            }
+        }
+
     }
 
     /**

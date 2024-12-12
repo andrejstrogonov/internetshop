@@ -24,9 +24,7 @@ public class DiscountedProduct extends Product {
 
     @Override
     public String toString() {
-        return "DiscountedProduct{" +
-                "basePrice=" + basePrice +
-                ", discountPercentage=" + "("+discountPercentage + ")"+
-                '}';
+        return "стоимость" + basePrice +
+                ", скидка" + "("+discountPercentage + ")";
     }
 }

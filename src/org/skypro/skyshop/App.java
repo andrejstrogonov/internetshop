@@ -56,6 +56,5 @@ public class App {
         // Поиск товара по имени в пустой корзине.
         exists = basket.contains(product1.getTitle());
         System.out.println("Товар " + product1.getTitle() + " есть в корзине: " + exists);
-
     }
 }
