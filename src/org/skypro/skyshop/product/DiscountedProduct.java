@@ -2,7 +2,7 @@ package org.skypro.skyshop.product;
 
 import org.jetbrains.annotations.NotNull;
 
-public class DiscountedProduct extends Product {
+public final class DiscountedProduct extends Product {
     private final int basePrice;
     private final int discountPercentage;
 
@@ -15,16 +15,20 @@ public class DiscountedProduct extends Product {
         super(title);
         this.basePrice = basePrice;
         this.discountPercentage = discountPercentage;
+        assert discountPercentage >= 0 && discountPercentage <= 100;
     }
 
     @Override
     public @NotNull int getPrice() {
-        return basePrice/discountPercentage;
+        return basePrice - (int)((double)(basePrice * discountPercentage) / 100.0);
     }
 
     @Override
     public String toString() {
-        return "стоимость" + basePrice +
-                ", скидка" + "("+discountPercentage + ")";
+        return getTitle() + ": " + getPrice() + " (скидка "+ discountPercentage + "%)";
+    }
+    @Override
+    public boolean isSpecial() {
+        return true;
     }
 }

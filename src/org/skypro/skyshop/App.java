@@ -34,6 +34,13 @@ public class App {
         // Получение стоимости корзины с несколькими товарами.
         int price = basket.getTotalPrice();
         System.out.println("Стоимость корзины с несколькими товарами: " + price);
+        System.out.println("Итого: " + price);
+
+        // Получение количества специальных товаров в корзине
+        int specialProductCount = basket.getSpecialProductCount();
+        System.out.println("Специальных товаров: " + specialProductCount);
+
+        System.out.println();
 
         // Поиск товара, который есть в корзине.
         boolean exists = basket.contains(product1.getTitle());
@@ -43,8 +50,13 @@ public class App {
         exists = basket.contains(product7.getTitle());
         System.out.println("Товар " + product7.getTitle() + " есть в корзине: " + exists);
 
+        System.out.println();
+
         // Очистка корзины.
+        System.out.println("Очистка корзины...");
         basket.clear();
+        System.out.println("Корзина очищена");
+        System.out.println();
 
         // Печать содержимого пустой корзины.
         basket.print();
@@ -52,6 +64,12 @@ public class App {
         // Получение стоимости пустой корзины.
         price = basket.getTotalPrice();
         System.out.println("Стоимость пустой корзины: " + price);
+
+        // Получение количества специальных товаров в корзине
+        specialProductCount = basket.getSpecialProductCount();
+        System.out.println("Специальных товаров в пустой корзине: " + specialProductCount);
+
+        System.out.println();
 
         // Поиск товара по имени в пустой корзине.
         exists = basket.contains(product1.getTitle());

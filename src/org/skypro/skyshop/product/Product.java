@@ -32,7 +32,7 @@ public abstract class Product {
     @NotNull
     public abstract int getPrice();
 
-    public void isSpecial(){
-
+    public boolean isSpecial(){
+        return false;
     }
 }

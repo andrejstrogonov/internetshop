@@ -2,25 +2,28 @@ package org.skypro.skyshop.product;
 
 import org.jetbrains.annotations.NotNull;
 
-public class FixPriceProduct extends Product{
-    private final int FIX_PRICE;
+public final class FixPriceProduct extends Product{
+    private final static int FIX_PRICE = 100;
     /**
      * Конструктор.
      *
      * @param title название продукта
      */
-    public FixPriceProduct(@NotNull String title, int fixPrice) {
+    public FixPriceProduct(@NotNull String title) {
         super(title);
-        FIX_PRICE = fixPrice;
     }
 
     @Override
-    public @NotNull int getPrice() {
+    public int getPrice() {
         return FIX_PRICE;
     }
 
     @Override
     public String toString() {
-        return  "Фиксированная цена" + FIX_PRICE;
+        return   getTitle() + ": Фиксированная цена " + FIX_PRICE;
+    }
+    @Override
+    public boolean isSpecial() {
+        return true;
     }
 }
