@@ -1,6 +1,8 @@
 package org.skypro.skyshop.basket;
 
 import org.jetbrains.annotations.NotNull;
+import org.skypro.skyshop.product.DiscountedProduct;
+import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
 
 import java.util.Arrays;
@@ -101,7 +103,7 @@ public class ProductBasket {
     }
 
     /**
-     * Печать корзины.
+     * Печать содержимого корзины.
      */
     public void print() {
         if (getProductCount() <= 0) {
@@ -131,5 +133,17 @@ public class ProductBasket {
             }
         }
         return false;
+    }
+
+    public int getSpecialProductCount() {
+        int count = 0;
+        for (Product product : products) {
+            if (product != null) {
+                if (product.isSpecial()) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 }
