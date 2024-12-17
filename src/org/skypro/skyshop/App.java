@@ -1,8 +1,12 @@
 package org.skypro.skyshop;
 
+import org.skypro.skyshop.article.Article;
+import org.skypro.skyshop.search.engine.SearchEngine;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
+
+import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {
@@ -74,5 +78,68 @@ public class App {
         // Поиск товара по имени в пустой корзине.
         exists = basket.contains(product1.getTitle());
         System.out.println("Товар " + product1.getTitle() + " есть в корзине: " + exists);
+
+        System.out.println();
+
+        // Тестирование движка поиска
+        Article article1 = new Article("Хлеб и молоко - можно ли выжить?",
+                "Выжить на хлебе и молоке невозможно, " +
+                        "так как ни один продукт не способен дать человеку всё, " +
+                        "что нужно для здорового образа жизни.");
+
+        Article article2 = new Article("Что нужно есть время от времени",
+                "При составлении рациона питания стоит учитывать " +
+                        "индивидуальные особенности человека, " +
+                        "в том числе биологические ритмы. " +
+                        "Но мясо есть необходимо.");
+
+        Article article3 = new Article("Lorem Ipsum,",
+                "У меня когда-то давно был автомобиль Toyota Ipsum в 10-м кузове. " +
+                        "Лучшая машина на планете Земля.");
+
+        System.out.println("Заполнение движка поиска...");
+        SearchEngine searchEngine = new SearchEngine(20);
+        searchEngine.add(product1);
+        searchEngine.add(product2);
+        searchEngine.add(product3);
+        searchEngine.add(product4);
+        searchEngine.add(product5);
+        searchEngine.add(product6);
+        searchEngine.add(product7);
+        searchEngine.add(article1);
+        searchEngine.add(article2);
+        searchEngine.add(article3);
+        System.out.println("Заполнен");
+
+        String query = "Бластер";
+        var searchResults = searchEngine.search(query);
+        System.out.println("Результаты поиска " + query + ": " + Arrays.toString(searchResults));
+
+        query = "Молоко";
+        searchResults = searchEngine.search(query);
+        System.out.println("Результаты поиска " + query + ": " + Arrays.toString(searchResults));
+
+        query = "молоко";
+        searchResults = searchEngine.search(query);
+        System.out.println("Результаты поиска " + query + ": " + Arrays.toString(searchResults));
+
+        query = "мясо";
+        searchResults = searchEngine.search(query);
+        System.out.println("Результаты поиска " + query + ": " + Arrays.toString(searchResults));
+
+        System.out.println();
+
+        query = "олок";
+        searchResults = searchEngine.search(query);
+        System.out.println("Результаты поиска " + query + ": " + Arrays.toString(searchResults));
+
+        System.out.println();
+
+        System.out.println("Представление результатов поиска в виде имён:");
+        for (var searchResult : searchResults) {
+            if (searchResult != null) {
+                System.out.println("Имя searchable: " + searchResult.getSearchableName());
+            }
+        }
     }
 }

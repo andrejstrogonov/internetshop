@@ -1,8 +1,9 @@
 package org.skypro.skyshop.product;
 
 import org.jetbrains.annotations.NotNull;
+import org.skypro.skyshop.search.Searchable;
 
-public abstract class Product {
+public abstract class Product implements Searchable {
     /**
      * Название продукта.
      */
