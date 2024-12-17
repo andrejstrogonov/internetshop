@@ -25,6 +25,7 @@ public class App {
         basket.add(product4);
         basket.add(product5);
 
+
         // Добавление продукта в заполненную корзину, в которой нет свободного места.
         basket.add(product6);
 
