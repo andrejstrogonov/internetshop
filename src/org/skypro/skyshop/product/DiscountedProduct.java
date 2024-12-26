@@ -11,11 +11,16 @@ public final class DiscountedProduct extends Product {
      *
      * @param title название продукта
      */
-    public DiscountedProduct(@NotNull String title, int basePrice, int discountPercentage) {
+    public DiscountedProduct(@NotNull String title, int basePrice, int discount) {
         super(title);
+        if (basePrice <= 0) {
+            throw new IllegalArgumentException("Базовая цена не может быть отрицательной или быть равной нулю");
+        }
         this.basePrice = basePrice;
-        this.discount = discountPercentage;
-        assert discountPercentage >= 0 && discountPercentage <= 100;
+        if (discount < 0 || discount > 100) {
+            throw new IllegalArgumentException("Скидка должна быть в диапазоне от 0 до 100%");
+        }
+        this.discount = discount;
     }
 
     @Override
