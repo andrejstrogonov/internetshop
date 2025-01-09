@@ -5,7 +5,7 @@ import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Корзина товаров.
@@ -15,47 +15,26 @@ import java.util.Arrays;
  */
 public class ProductBasket {
     /**
-     * Максимальное количество товаров в корзине.
-     */
-    public static final int MAX_PRODUCTS = 5;
-
-    /**
-     * Универсальный признак "не найдено".
-     */
-    public static final int NOT_FOUND = -1;
-
-    /**
      * Реализация хранилища товаров.
      */
-    private final Product[] products;
+    private final List<Product> products;
 
     /**
      * Конструктор.
      */
     public ProductBasket() {
-        products = new Product[MAX_PRODUCTS];
+        products = new LinkedList<>();
         clear();
+        // LinkedList выбран потому, что сейчас не нужна функциональность
+        // массива в части доступа по индексу. Больше нужна функциональность
+        // по произвольному добавлению и удалению элементов.
     }
 
     /**
      * Очистка корзины.
      */
     public void clear() {
-        Arrays.fill(products, null);
-    }
-
-    /**
-     * Получение первой от нуля свободной или занятой ячейки в хранилище.
-     *
-     * @return индекс свободной ячейки или {@link #NOT_FOUND}
-     */
-    private int getFirstFreeIndex() {
-        for (int i = 0; i < products.length; i++) {
-            if (products[i] == null) {
-                return i;
-            }
-        }
-        return NOT_FOUND;
+        products.clear();
     }
 
     /**
@@ -64,12 +43,28 @@ public class ProductBasket {
      * @param product добавляемый товар
      */
     public void add(@NotNull Product product) {
-        int freeIndex = getFirstFreeIndex();
-        if (freeIndex == NOT_FOUND) {
-            System.out.println("Невозможно добавить продукт");
-            return;
+        products.add(product);
+    }
+
+    /**
+     * Удаление товара из корзины.
+     *
+     * @param title наименование удаляемого товара
+     */
+    @NotNull
+    public List<Product> remove(@NotNull String title) {
+        List<Product> removed = new LinkedList<>();
+
+        Iterator<Product> iterator = products.iterator();
+        while (iterator.hasNext()) {
+            var element = iterator.next();
+            if (element.getTitle().equals(title)) {
+                iterator.remove();
+                removed.add(element);
+            }
         }
-        products[freeIndex] = product;
+
+        return removed;
     }
 
     /**
@@ -88,22 +83,33 @@ public class ProductBasket {
     }
 
     /**
-     * Получение количества товаров в корзине.
+     * Получение количества специальных товаров в корзине.
      *
-     * @return количество товаров в корзине
+     * @return количество специальных товаров в корзине
      */
-    private int getProductCount() {
+    public int getSpecialProductCount() {
         int count = 0;
         for (Product product : products) {
             if (product != null) {
-                count++;
+                if (product.isSpecial()) {
+                    count++;
+                }
             }
         }
         return count;
     }
 
     /**
-     * Печать содержимого корзины.
+     * Получение общего количества товаров в корзине.
+     *
+     * @return общее количество товаров в корзине
+     */
+    private int getProductCount() {
+        return products.size();
+    }
+
+    /**
+     * Печать корзины.
      */
     public void print() {
         if (getProductCount() <= 0) {
@@ -113,7 +119,7 @@ public class ProductBasket {
 
         for (Product product : products) {
             if (product != null) {
-                System.out.println(product.getTitle() + ": " + product.getPrice());
+                System.out.println(product);
             }
         }
     }
@@ -127,23 +133,11 @@ public class ProductBasket {
     public boolean contains(@NotNull String title) {
         for (Product product : products) {
             if (product != null) {
-                if (product.getTitle().equals(title)) {
+                if (Objects.equals(product.getTitle(), title)) {
                     return true;
                 }
             }
         }
         return false;
-    }
-
-    public int getSpecialProductCount() {
-        int count = 0;
-        for (Product product : products) {
-            if (product != null) {
-                if (product.isSpecial()) {
-                    count++;
-                }
-            }
-        }
-        return count;
     }
 }
