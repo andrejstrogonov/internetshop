@@ -5,6 +5,8 @@ import org.skypro.skyshop.search.Searchable;
 import org.skypro.skyshop.tools.StringTools;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Движок поиска.<br>
@@ -15,15 +17,13 @@ import java.util.Arrays;
  * @version 1.1
  */
 public final class SearchEngine {
-    private final Searchable[] searchableItems;
+    private final List<Searchable> searchableItems;
 
     /**
      * Конструктор.
-     *
-     * @param size размер массива.
      */
-    public SearchEngine(int size) {
-        this.searchableItems = new Searchable[size];
+    public SearchEngine() {
+        this.searchableItems = new LinkedList<>();
         clear();
     }
 
@@ -31,7 +31,7 @@ public final class SearchEngine {
      * Очистка массива.
      */
     public void clear() {
-        Arrays.fill(searchableItems, null);
+        searchableItems.clear();
     }
 
     /**
@@ -40,28 +40,24 @@ public final class SearchEngine {
      * @param searchable элемент для добавления.
      */
     public void add(@NotNull Searchable searchable) {
-        int freeIndex = ArrayTools.getFirsIndex(searchableItems, true);
-        if (freeIndex == ArrayTools.NOT_FOUND) {
-            System.out.println("Невозможно добавить элемент для поиска");
-            return;
-        }
-        searchableItems[freeIndex] = searchable;
+        searchableItems.add(searchable);
     }
 
     /**
      * Количество результатов поиска.
      */
-    public static final int MAX_RESULTS = 5;
+    public static final int MAX_RESULTS = 10_000;
 
     /**
-     * Поиск.
+     * Поиск.<br>
+     * Ограничение по количеству результатов оставлено для безопасности,<br>
+     * но предел увеличен до очень большого значения.
      *
      * @param query запрос.
      */
     @NotNull
-    public Searchable[] search(@NotNull String query) {
-        Searchable[] results = new Searchable[MAX_RESULTS];
-        Arrays.fill(results, null);
+    public List<Searchable> search(@NotNull String query) {
+        List<Searchable> results = new LinkedList<>();
 
         int i = 0;
         for (Searchable searchable : searchableItems) {
@@ -69,8 +65,8 @@ public final class SearchEngine {
                 continue;
             }
             if (searchable.getSearchableTerm().contains(query)) {
-                results[i++] = searchable;
-                if (i >= MAX_RESULTS) {
+                results.add(searchable);
+                if (i++ >= MAX_RESULTS) {
                     break;
                 }
             }
@@ -86,12 +82,11 @@ public final class SearchEngine {
      */
     @NotNull
     public Searchable searchMostFrequent(String query) throws BestResultNotFound {
-        int firstIndex = ArrayTools.getFirsIndex(searchableItems, false);
-        if (firstIndex == ArrayTools.NOT_FOUND) {
+        if (searchableItems.isEmpty()) {
             throw new BestResultNotFound("Массив элементов для поиска пуст");
         }
 
-        Searchable mostFrequent = searchableItems[firstIndex];
+        Searchable mostFrequent = searchableItems.getFirst();
         int maxCount = StringTools.countMatches(mostFrequent.getSearchableTerm(), query);
 
         for (Searchable searchable : searchableItems) {
