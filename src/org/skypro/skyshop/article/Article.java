@@ -3,6 +3,8 @@ package org.skypro.skyshop.article;
 import org.jetbrains.annotations.NotNull;
 import org.skypro.skyshop.search.Searchable;
 
+import java.util.Objects;
+
 /**
  * Статья.<br>
  * Не содержит привязок к продукту или к магазину. Просто общий тип.
@@ -70,5 +72,17 @@ public final class Article implements Searchable {
     @Override
     public @NotNull String getSearchableContentKind() {
         return SEARCHABLE_CONTENT_KIND;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Article article = (Article) o;
+        return Objects.equals(title, article.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(title);
     }
 }

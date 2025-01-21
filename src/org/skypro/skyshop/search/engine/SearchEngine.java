@@ -6,22 +6,15 @@ import org.skypro.skyshop.tools.StringTools;
 
 import java.util.*;
 
-/**
- * Движок поиска.<br>
- * Не содержит привязок к продукту или к магазину. Привязка только к интерфейсу поиска.
- * Поэтому класс находится в пакете поиска, в основной иерархии магазина.
- *
- * @author Константин Терских, kostus.online.1974@yandex.ru, 2024
- * @version 1.1
- */
+
 public final class SearchEngine {
-    private final List<Searchable> searchableItems;
+    private final HashSet<Searchable> searchableItems;
 
     /**
      * Конструктор.
      */
     public SearchEngine() {
-        this.searchableItems = new LinkedList<>();
+        this.searchableItems = new HashSet<>();
         clear();
     }
 
