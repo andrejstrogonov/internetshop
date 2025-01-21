@@ -1,6 +1,5 @@
 package org.skypro.skyshop.search.engine;
 import org.jetbrains.annotations.NotNull;
-import org.skypro.skyshop.tools.ArrayTools;
 import org.skypro.skyshop.search.Searchable;
 import org.skypro.skyshop.tools.StringTools;
 
@@ -47,8 +46,8 @@ public final class SearchEngine {
      * @param query запрос.
      */
     @NotNull
-    public Map<String, Searchable> search(@NotNull String query) {
-        Map<String, Searchable> results = new TreeMap<>();
+    public Set<Searchable> search(@NotNull String query) {
+        Set<Searchable> results = new TreeSet<>(new CustomComparator());
 
         int i = 0;
         for (Searchable searchable : searchableItems) {
@@ -63,6 +62,15 @@ public final class SearchEngine {
             }
         }
         return results;
+    }
+    public static class CustomComparator implements Comparator<Searchable> {
+        @Override
+        public int compare(Searchable o1, Searchable o2) {
+            return o1.getSearchableName().compareTo(o2.getSearchableName());
+        }
+        public boolean compareLines(Searchable o1, Searchable o2) {
+            return Integer.compare(o1.getSearchableName().length(), o2.getSearchableName().length()) == 0;
+        }
     }
 
     /**
