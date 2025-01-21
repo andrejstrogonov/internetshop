@@ -4,9 +4,7 @@ import org.skypro.skyshop.tools.ArrayTools;
 import org.skypro.skyshop.search.Searchable;
 import org.skypro.skyshop.tools.StringTools;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Движок поиска.<br>
@@ -56,8 +54,8 @@ public final class SearchEngine {
      * @param query запрос.
      */
     @NotNull
-    public List<Searchable> search(@NotNull String query) {
-        List<Searchable> results = new LinkedList<>();
+    public Map<String, Searchable> search(@NotNull String query) {
+        Map<String, Searchable> results = new TreeMap<>();
 
         int i = 0;
         for (Searchable searchable : searchableItems) {
@@ -65,7 +63,7 @@ public final class SearchEngine {
                 continue;
             }
             if (searchable.getSearchableTerm().contains(query)) {
-                results.add(searchable);
+                results.put(searchable.getSearchableName(), searchable);
                 if (i++ >= MAX_RESULTS) {
                     break;
                 }
@@ -90,12 +88,10 @@ public final class SearchEngine {
         int maxCount = StringTools.countMatches(mostFrequent.getSearchableTerm(), query);
 
         for (Searchable searchable : searchableItems) {
-            if (searchable != null) {
-                int count = StringTools.countMatches(searchable.getSearchableTerm(), query);
-                if (count > maxCount) {
-                    maxCount = count;
-                    mostFrequent = searchable;
-                }
+            int count = StringTools.countMatches(searchable.getSearchableTerm(), query);
+            if (count > maxCount) {
+                maxCount = count;
+                mostFrequent = searchable;
             }
         }
 
