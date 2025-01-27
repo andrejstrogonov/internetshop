@@ -63,13 +63,16 @@ public final class SearchEngine {
         }
         return results;
     }
+
     public static class CustomComparator implements Comparator<Searchable> {
         @Override
         public int compare(Searchable o1, Searchable o2) {
-            return o1.getSearchableName().compareTo(o2.getSearchableName());
-        }
-        public boolean compareLines(Searchable o1, Searchable o2) {
-            return Integer.compare(o1.getSearchableName().length(), o2.getSearchableName().length()) == 0;
+            int result = Integer.compare(o1.getSearchableName().length(),
+                    o2.getSearchableName().length());
+            if (result != 0) {
+                return o1.getSearchableTerm().compareTo(o2.getSearchableTerm());
+            }
+            return result;
         }
     }
 
