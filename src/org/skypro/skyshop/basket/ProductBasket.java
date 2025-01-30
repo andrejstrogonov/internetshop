@@ -2,7 +2,6 @@ package org.skypro.skyshop.basket;
 
 import org.jetbrains.annotations.NotNull;
 import org.skypro.skyshop.product.DiscountedProduct;
-import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
 
 import java.util.*;
@@ -74,19 +73,10 @@ public class ProductBasket {
      * @return общая стоимость корзины
      */
     public int getTotalPrice() {
-        //List<Product> products = basket.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
-        if (basket.isEmpty()) {
-            return 0;
-        }
-
-        int sum = 0;
-        for (String title : basket.keySet()) {
-            List<Product> products = basket.get(title);
-            for (Product product : products) {
-                sum += product.getPrice();
-            }
-        }
-        return sum;
+        return basket.values().stream()
+                .flatMap(List::stream)
+                .mapToInt(Product::getPrice)
+                .sum();
     }
 
     /**
@@ -95,20 +85,11 @@ public class ProductBasket {
      * @return количество специальных товаров в корзине
      */
     public int getSpecialProductCount() {
-        if (basket.isEmpty()) {
-            return 0;
-        }
-
-        int count = 0;
-        for (String title : basket.keySet()) {
-            List<Product> products = basket.get(title);
-            for (Product product : products) {
-                if (product.isSpecial()) {
-                    count++;
-                }
-            }
-        }
-        return count;
+        return basket.values().stream()
+                .flatMap(List::stream)
+                .filter(product -> product instanceof DiscountedProduct)
+                .mapToInt(product -> 1)
+                .sum();
     }
 
     /**
@@ -118,16 +99,9 @@ public class ProductBasket {
      */
     @SuppressWarnings("unused")
     private int getProductCount() {
-        if (basket.isEmpty()) {
-            return 0;
-        }
-
-        int count = 0;
-        for (String title : basket.keySet()) {
-            List<Product> products = basket.get(title);
-            count += products.size();
-        }
-        return count;
+        return (int) basket.values().stream()
+                .flatMap(Collection::stream)
+                .count();
     }
 
     /**
@@ -138,22 +112,8 @@ public class ProductBasket {
             System.out.println("в корзине пусто");
             return;
         }
-
-        for (String title : basket.keySet()) {
-            List<Product> products = basket.get(title);
-            for (Product product : products) {
-                System.out.println(product);
-            }
-        }
-    }
-
-    /**
-     * Проверка наличия товара в корзине.
-     *
-     * @param title название товара
-     * @return true если товар есть в корзине
-     */
-    public boolean contains(@NotNull String title) {
-        return basket.containsKey(title);
+        basket.values().stream()
+                .flatMap(List::stream)
+                .forEach(System.out::println);
     }
 }

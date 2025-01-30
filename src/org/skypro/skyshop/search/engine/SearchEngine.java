@@ -1,9 +1,11 @@
 package org.skypro.skyshop.search.engine;
+
 import org.jetbrains.annotations.NotNull;
 import org.skypro.skyshop.search.Searchable;
 import org.skypro.skyshop.tools.StringTools;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public final class SearchEngine {
@@ -47,62 +49,52 @@ public final class SearchEngine {
      */
     @NotNull
     public Set<Searchable> search(@NotNull String query) {
-        Set<Searchable> results = new TreeSet<>(new CustomComparator());
+        return searchableItems.stream()
+                .filter(Objects::nonNull)
+                .filter(searchable -> searchable.getSearchableTerm().contains(query))
+                .limit(MAX_RESULTS)
+                .collect(Collectors.toCollection(() -> new TreeSet<>(new CustomComparator())));
+    }
+}
 
-        int i = 0;
-        for (Searchable searchable : searchableItems) {
-            if (searchable == null) {
-                continue;
-            }
-            if (searchable.getSearchableTerm().contains(query)) {
-                results.put(searchable.getSearchableName(), searchable);
-                if (i++ >= MAX_RESULTS) {
-                    break;
-                }
-            }
+public static class CustomComparator implements Comparator<Searchable> {
+    @Override
+    public int compare(Searchable o1, Searchable o2) {
+        int result = Integer.compare(o1.getSearchableName().length(),
+                o2.getSearchableName().length());
+        if (result != 0) {
+            return o1.getSearchableTerm().compareTo(o2.getSearchableTerm());
         }
-        return results;
+        return result;
+    }
+}
+
+/**
+ * Поиск наиболее частого результата.
+ *
+ * @param query запрос.
+ * @throws BestResultNotFound если не найдено совпадений.
+ */
+@NotNull
+public Searchable searchMostFrequent(String query) throws BestResultNotFound {
+    if (searchableItems.isEmpty()) {
+        throw new BestResultNotFound("Массив элементов для поиска пуст");
     }
 
-    public static class CustomComparator implements Comparator<Searchable> {
-        @Override
-        public int compare(Searchable o1, Searchable o2) {
-            int result = Integer.compare(o1.getSearchableName().length(),
-                    o2.getSearchableName().length());
-            if (result != 0) {
-                return o1.getSearchableTerm().compareTo(o2.getSearchableTerm());
-            }
-            return result;
+    Searchable mostFrequent = searchableItems.getFirst();
+    int maxCount = StringTools.countMatches(mostFrequent.getSearchableTerm(), query);
+
+    for (Searchable searchable : searchableItems) {
+        int count = StringTools.countMatches(searchable.getSearchableTerm(), query);
+        if (count > maxCount) {
+            maxCount = count;
+            mostFrequent = searchable;
         }
     }
 
-    /**
-     * Поиск наиболее частого результата.
-     *
-     * @param query запрос.
-     * @throws BestResultNotFound если не найдено совпадений.
-     */
-    @NotNull
-    public Searchable searchMostFrequent(String query) throws BestResultNotFound {
-        if (searchableItems.isEmpty()) {
-            throw new BestResultNotFound("Массив элементов для поиска пуст");
-        }
-
-        Searchable mostFrequent = searchableItems.getFirst();
-        int maxCount = StringTools.countMatches(mostFrequent.getSearchableTerm(), query);
-
-        for (Searchable searchable : searchableItems) {
-            int count = StringTools.countMatches(searchable.getSearchableTerm(), query);
-            if (count > maxCount) {
-                maxCount = count;
-                mostFrequent = searchable;
-            }
-        }
-
-        if (maxCount <= 0) {
-            throw new BestResultNotFound("Не найдено совпадений");
-        }
-
-        return mostFrequent;
+    if (maxCount <= 0) {
+        throw new BestResultNotFound("Не найдено совпадений");
     }
+
+    return mostFrequent;
 }
