@@ -1,27 +1,19 @@
 package org.skypro.skyshop.search.engine;
 import org.jetbrains.annotations.NotNull;
-import org.skypro.skyshop.tools.ArrayTools;
 import org.skypro.skyshop.search.Searchable;
 import org.skypro.skyshop.tools.StringTools;
 
 import java.util.*;
 
-/**
- * Движок поиска.<br>
- * Не содержит привязок к продукту или к магазину. Привязка только к интерфейсу поиска.
- * Поэтому класс находится в пакете поиска, в основной иерархии магазина.
- *
- * @author Константин Терских, kostus.online.1974@yandex.ru, 2024
- * @version 1.1
- */
+
 public final class SearchEngine {
-    private final List<Searchable> searchableItems;
+    private final HashSet<Searchable> searchableItems;
 
     /**
      * Конструктор.
      */
     public SearchEngine() {
-        this.searchableItems = new LinkedList<>();
+        this.searchableItems = new HashSet<>();
         clear();
     }
 
@@ -54,8 +46,8 @@ public final class SearchEngine {
      * @param query запрос.
      */
     @NotNull
-    public Map<String, Searchable> search(@NotNull String query) {
-        Map<String, Searchable> results = new TreeMap<>();
+    public Set<Searchable> search(@NotNull String query) {
+        Set<Searchable> results = new TreeSet<>(new CustomComparator());
 
         int i = 0;
         for (Searchable searchable : searchableItems) {
@@ -70,6 +62,18 @@ public final class SearchEngine {
             }
         }
         return results;
+    }
+
+    public static class CustomComparator implements Comparator<Searchable> {
+        @Override
+        public int compare(Searchable o1, Searchable o2) {
+            int result = Integer.compare(o1.getSearchableName().length(),
+                    o2.getSearchableName().length());
+            if (result != 0) {
+                return o1.getSearchableTerm().compareTo(o2.getSearchableTerm());
+            }
+            return result;
+        }
     }
 
     /**
